@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1008109203739",
+    "firebase_url": "https://ikpmd-b05ab.firebaseio.com",
+    "project_id": "ikpmd-b05ab",
+    "storage_bucket": "ikpmd-b05ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008109203739:android:45bf76fcff87fdc121a3be",
+        "android_client_info": {
+          "package_name": "com.game.ikpmd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1008109203739-rn7ib3hrkkhdr4f2uukk74mggbvt4bte.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD31s0hEI-nqFKLYI-2oPnEITzGg7W_xjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008109203739-rn7ib3hrkkhdr4f2uukk74mggbvt4bte.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
