@@ -14,12 +14,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
+    FirebaseConnector firebaseConnector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // FirebaseConnector setup
+        firebaseConnector = new FirebaseConnector();
+        firebaseConnector.connect();
+
+        // Create current page listeners
         createListeners();
     }
 
@@ -40,8 +46,6 @@ public class RegisterActivity extends AppCompatActivity {
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
 
-        Log.d("the register button", "works");
-
-        FirebaseConnector.registerUser(username, password);
+        firebaseConnector.registerUser(username, password);
     }
 }
