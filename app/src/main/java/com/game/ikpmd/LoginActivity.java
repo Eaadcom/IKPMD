@@ -13,6 +13,7 @@ import com.game.ikpmd.firebaseConnector.FirebaseConnector;
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseConnector firebaseConnector;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +42,15 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser(){
         EditText usernameField = (EditText)findViewById(R.id.loginUsernameField);
         EditText passwordField = (EditText)findViewById(R.id.loginPasswordField);
-        String username = usernameField.getText().toString();
+        username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
 
         firebaseConnector.loginUser(username, password, this);
-        //Log.d("yes", ""+loggedIn);
     }
 
     public void moveToCityActivity(){
         Intent intent = new Intent(LoginActivity.this, CityActivity.class);
+        intent.putExtra("username", username);
         startActivity(intent);
     }
 }
