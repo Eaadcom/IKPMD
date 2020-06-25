@@ -43,8 +43,42 @@ public class FirebaseConnector implements Serializable {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+<<<<<<< Updated upstream
                 // helemaal niks
+=======
+
             }
         });
+    }
+
+    public void checkCitiesForUser(final String name, final CityActivity cityActivity){
+        final DatabaseReference reference = db.getReference("cities");
+        final Gson gson = new Gson();
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ArrayList<City> cities = new ArrayList<>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    City city = gson.fromJson(gson.toJson(child.getValue()), City.class);
+                    city.setUniqueIdentifier(child.getKey());
+                    cities.add(city);
+                }
+
+                cityActivity.checkIfUserHasCity(name, cities);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+>>>>>>> Stashed changes
+            }
+        });
+    }
+
+    public void updateCityInFirebase(City city){
+        DatabaseReference reference = db.getReference("cities/"+city.getUniqueIdentifier());
+        reference.setValue(city);
     }
 }

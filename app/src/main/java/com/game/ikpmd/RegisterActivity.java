@@ -47,5 +47,11 @@ public class RegisterActivity extends AppCompatActivity {
         String password = passwordField.getText().toString();
 
         firebaseConnector.registerUser(username, password);
+        moveToLogin();
+    }
+
+    private void moveToLogin(){
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }
