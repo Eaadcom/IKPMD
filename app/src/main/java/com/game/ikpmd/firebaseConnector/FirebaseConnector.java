@@ -4,14 +4,23 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.game.ikpmd.CityActivity;
 import com.game.ikpmd.LoginActivity;
+import com.game.ikpmd.models.City;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
+import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class FirebaseConnector implements Serializable {
     private FirebaseDatabase db;
@@ -33,7 +42,6 @@ public class FirebaseConnector implements Serializable {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 originalPassword = (String) dataSnapshot.getValue();
-                Log.d("hier zooi", "zooi:"+originalPassword);
 
                 if ((reference.getKey().equals(username)) && (originalPassword.equals(password))) {
                     loginActivity.moveToCityActivity();
@@ -43,9 +51,6 @@ public class FirebaseConnector implements Serializable {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-<<<<<<< Updated upstream
-                // helemaal niks
-=======
 
             }
         });
@@ -72,7 +77,6 @@ public class FirebaseConnector implements Serializable {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
->>>>>>> Stashed changes
             }
         });
     }

@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-<<<<<<< Updated upstream
-=======
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,25 +24,20 @@ import com.google.gson.Gson;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
->>>>>>> Stashed changes
 
 import java.util.Random;
 
 public class CityActivity extends AppCompatActivity {
-<<<<<<< Updated upstream
-=======
     private FirebaseConnector firebaseConnector;
     private boolean userHasCity = false;
     DatabaseHelper databaseHelper;
     City currentCity;
->>>>>>> Stashed changes
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
-<<<<<<< Updated upstream
-=======
 
         // FirebaseConnector setup
         firebaseConnector = new FirebaseConnector();
