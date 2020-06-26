@@ -37,7 +37,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 DatabaseInfo.CityColumn.Name + " TEXT," +
                 DatabaseInfo.CityColumn.XAxisPosition + " TEXT," +
                 DatabaseInfo.CityColumn.YAxisPosition + " TEXT," +
-                DatabaseInfo.CityColumn.Units + " TEXT);"
+                DatabaseInfo.CityColumn.Swordsman + " TEXT," +
+                DatabaseInfo.CityColumn.Archer + " TEXT," +
+                DatabaseInfo.CityColumn.Horseman + " TEXT);"
         );
     }
 

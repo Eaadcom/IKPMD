@@ -18,6 +18,8 @@ import com.game.ikpmd.list.CityListActivity;
 import com.game.ikpmd.list.CityListAdapter;
 import com.game.ikpmd.models.City;
 import com.game.ikpmd.models.buildings.Goldmine;
+import com.game.ikpmd.models.units.Archer;
+import com.game.ikpmd.models.units.Horseman;
 import com.game.ikpmd.models.units.Swordsman;
 import com.google.gson.Gson;
 
@@ -80,6 +82,12 @@ public class CityActivity extends AppCompatActivity {
 
         TextView cityNameText = findViewById(R.id.cityNameText);
         cityNameText.setText(currentCity.getName());
+        cityNameText.setTextSize(20f);
+
+        TextView buildingsText = findViewById(R.id.buildingsText);
+        buildingsText.setTextSize(17f);
+        TextView resourcesText = findViewById(R.id.resourcesText);
+        resourcesText.setTextSize(17f);
 
         TextView currentGoldText = findViewById(R.id.currentGoldText);
         currentGoldText.setText("Gold: "+currentCity.getGoldmine().getGold());
@@ -90,7 +98,7 @@ public class CityActivity extends AppCompatActivity {
         int xAxisPosition = random.nextInt(100);
         int yAxisPosition = random.nextInt(100);
 
-        City city = new City(username, "city of "+username, xAxisPosition, yAxisPosition, new Goldmine(), new Swordsman());
+        City city = new City(username, "city of "+username, xAxisPosition, yAxisPosition, new Goldmine(), new Swordsman(), new Archer(), new Horseman());
 
         String[] columnString = new String[]{
                 "uniqueIdentifier"
@@ -129,24 +137,22 @@ public class CityActivity extends AppCompatActivity {
         for (int i = 0; i < cities.size(); i++){
             databaseHelper.insertCityIntoSQLiteDatabase(cities.get(i));
         }
->>>>>>> Stashed changes
     }
 
     public void moveToCityList(){
         Intent intent = new Intent(CityActivity.this, CityListActivity.class);
+        intent.putExtra("city", new Gson().toJson(currentCity));
         startActivity(intent);
     }
 
     public void moveToBarracks(){
         Intent intent = new Intent(CityActivity.this, BarracksActivity.class);
-
         intent.putExtra("city", new Gson().toJson(currentCity));
-
         startActivity(intent);
     }
 
     private void createListeners(){
-        Button loginButton = (Button) findViewById(R.id.openCityListButton);
+        ImageButton loginButton = (ImageButton) findViewById(R.id.openCityListButton);
         ImageButton barracksButton = (ImageButton) findViewById(R.id.barracksButton);
 
         loginButton.setOnClickListener(new View.OnClickListener(){

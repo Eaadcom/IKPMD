@@ -12,6 +12,8 @@ public class DatabaseInfo {
         public static final String Name = "name";
         public static final String XAxisPosition = "xAxisPosition";
         public static final String YAxisPosition = "yAxisPosition";
-        public static final String Units = "units";
+        public static final String Swordsman = "swordsman";
+        public static final String Archer = "archer";
+        public static final String Horseman = "horseman";
     }
 }

@@ -3,10 +3,12 @@ package com.game.ikpmd.list;
 import androidx.annotation.NonNull;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.game.ikpmd.R;
@@ -15,6 +17,7 @@ import com.game.ikpmd.models.City;
 import java.util.List;
 
 public class CityListAdapter extends ArrayAdapter<City> {
+    City city;
 
     public CityListAdapter(@NonNull Context context, int resource, List<City> objects) {
         super(context, resource, objects);
@@ -23,6 +26,8 @@ public class CityListAdapter extends ArrayAdapter<City> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         CityListAdapter.ViewHolder vh;
+
+        createListeners();
 
         if (convertView == null ) {
             vh = new CityListAdapter.ViewHolder();
@@ -36,7 +41,7 @@ public class CityListAdapter extends ArrayAdapter<City> {
         } else {
             vh = (CityListAdapter.ViewHolder) convertView.getTag();
         }
-        City city = getItem(position);
+        city = getItem(position);
         vh.name.setText((CharSequence) city.getName());
         vh.owner.setText((CharSequence) "City is owned by: "+city.getOwner());
         vh.xCoor.setText((CharSequence) "x: "+String.valueOf(city.getxAxisPosition()));
@@ -49,5 +54,16 @@ public class CityListAdapter extends ArrayAdapter<City> {
         TextView owner;
         TextView xCoor;
         TextView yCoor;
+    }
+
+    private void createListeners(){
+//        Button attackButton = (Button) itemView.findViewById(R.id.attackButton);
+//
+//        attackButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                Log.d("test", city.getName());
+//            }
+//        });
     }
 }

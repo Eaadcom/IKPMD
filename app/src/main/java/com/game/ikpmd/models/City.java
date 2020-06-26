@@ -2,6 +2,8 @@ package com.game.ikpmd.models;
 
 import com.game.ikpmd.models.buildings.Building;
 import com.game.ikpmd.models.buildings.Goldmine;
+import com.game.ikpmd.models.units.Archer;
+import com.game.ikpmd.models.units.Horseman;
 import com.game.ikpmd.models.units.Swordsman;
 import com.game.ikpmd.models.units.Unit;
 
@@ -14,19 +16,31 @@ public class City implements Serializable {
     private String name;
     private int xAxisPosition;
     private int yAxisPosition;
-    private ArrayList<Unit> units;
-    private ArrayList<Building> buildings;
     private Goldmine goldmine;
     private Swordsman swordsman;
+    private Archer archer;
+    private Horseman horseman;
 
-    public City(String owner, String name, int xAxisPosition, int yAxisPosition, Goldmine goldmine, Swordsman swordsman){
+    public City(String uniqueIdentifier, String owner, String name, int xAxisPosition, int yAxisPosition, Swordsman swordsman, Archer archer, Horseman horseman){
+        this.uniqueIdentifier = uniqueIdentifier;
         this.owner = owner;
         this.name = name;
         this.xAxisPosition = xAxisPosition;
         this.yAxisPosition = yAxisPosition;
-        //buildings = new ArrayList<>();
+        this.swordsman = swordsman;
+        this.archer = archer;
+        this.horseman = horseman;
+    }
+
+    public City(String owner, String name, int xAxisPosition, int yAxisPosition, Goldmine goldmine, Swordsman swordsman, Archer archer, Horseman horseman){
+        this.owner = owner;
+        this.name = name;
+        this.xAxisPosition = xAxisPosition;
+        this.yAxisPosition = yAxisPosition;
         this.goldmine = goldmine;
         this.swordsman = swordsman;
+        this.archer = archer;
+        this.horseman = horseman;
     }
 
     public City(String owner, String name, int xAxisPosition, int yAxisPosition){
@@ -57,10 +71,6 @@ public class City implements Serializable {
         return yAxisPosition;
     }
 
-    public ArrayList<Unit> getUnits() {
-        return units;
-    }
-
     public String getName() {
         return name;
     }
@@ -69,19 +79,19 @@ public class City implements Serializable {
         return uniqueIdentifier;
     }
 
-    public void addBuilding(Building building){
-        buildings.add(building);
-    }
-
-    public ArrayList<Building> getBuildings() {
-        return buildings;
-    }
-
     public Goldmine getGoldmine() {
         return goldmine;
     }
 
     public Swordsman getSwordsman() {
         return swordsman;
+    }
+
+    public Archer getArcher() {
+        return archer;
+    }
+
+    public Horseman getHorseman() {
+        return horseman;
     }
 }
