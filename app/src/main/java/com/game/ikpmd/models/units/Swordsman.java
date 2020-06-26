@@ -40,4 +40,6 @@ public class Swordsman implements Unit{
     public void reduceByAmount(int amount){
         this.amount = this.amount - amount;
     }
+
+
 }

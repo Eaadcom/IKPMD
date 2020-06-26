@@ -2,14 +2,19 @@ package com.game.ikpmd.list;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.game.ikpmd.R;
 import com.game.ikpmd.database.DatabaseHelper;
 import com.game.ikpmd.models.Attack;
-import com.game.ikpmd.models.City;
 import com.game.ikpmd.models.units.Archer;
 import com.game.ikpmd.models.units.Horseman;
 import com.game.ikpmd.models.units.Swordsman;
@@ -18,13 +23,37 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class AttackListActivity extends AppCompatActivity {
+    private ListView mListView;
+    private AttackListAdapter mAdapter;
     DatabaseHelper databaseHelper;
-    ArrayList<Attack> attacks;
+    ArrayList<Attack> attacks = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attack_list);
+
+        loadAttacks();
+
+        mListView = (ListView) findViewById(R.id.my_list_view);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                             @Override
+                                             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                                                 if (!attacks.get(position).getUniqueIdentifier().equals(currentCity.getUniqueIdentifier())){
+//                                                     Intent intent = new Intent(CityListActivity.this, AttackActivity.class);
+//                                                     intent.putExtra("enemyCity", new Gson().toJson(cities.get(position)));
+//                                                     intent.putExtra("currentCity", new Gson().toJson(currentCity));
+//                                                     startActivity(intent);
+//                                                 } else {
+//                                                     Toast t = Toast.makeText(CityListActivity.this,"Your own city!" ,Toast.LENGTH_SHORT);
+//                                                     t.show();
+//                                                 }
+                                             }
+                                         }
+        );
+
+        mAdapter = new AttackListAdapter(AttackListActivity.this, 0, attacks);
+        mListView.setAdapter(mAdapter);
     }
 
     private void loadAttacks(){
@@ -41,7 +70,7 @@ public class AttackListActivity extends AppCompatActivity {
                 "arrived"
         };
 
-        Cursor cursor = databaseHelper.query("CityTable", columnString, null, null, null, null, null);
+        Cursor cursor = databaseHelper.query("AttackTable", columnString, null, null, null, null, null);
 
         Gson gson = new Gson();
 

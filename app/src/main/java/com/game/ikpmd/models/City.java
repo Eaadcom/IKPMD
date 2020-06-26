@@ -32,6 +32,11 @@ public class City implements Serializable {
         this.horseman = horseman;
     }
 
+    public City(String uniqueIdentifier, String name){
+        this.uniqueIdentifier = uniqueIdentifier;
+        this.name = name;
+    }
+
     public City(String owner, String name, int xAxisPosition, int yAxisPosition, Goldmine goldmine, Swordsman swordsman, Archer archer, Horseman horseman){
         this.owner = owner;
         this.name = name;

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.game.ikpmd.list.AttackListAdapter;
 import com.game.ikpmd.models.Attack;
 import com.game.ikpmd.models.City;
 import com.google.gson.Gson;
@@ -27,6 +28,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             mInstance = new DatabaseHelper(ctx);
             mSQLDB = mInstance.getWritableDatabase();
         }
+        return mInstance;
+    }
+
+    public static synchronized DatabaseHelper getHelper (){
         return mInstance;
     }
 
@@ -60,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS "+ DatabaseInfo.AppTables.CITYTABLE);
+        db.execSQL("DROP TABLE IF EXISTS "+ DatabaseInfo.AppTables.ATTACKTABLE);
         onCreate(db);
     }
 

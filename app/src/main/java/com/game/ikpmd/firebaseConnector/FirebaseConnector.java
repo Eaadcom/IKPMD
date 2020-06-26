@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.game.ikpmd.CityActivity;
 import com.game.ikpmd.LoginActivity;
+import com.game.ikpmd.list.AttackListAdapter;
 import com.game.ikpmd.models.Attack;
 import com.game.ikpmd.models.City;
 import com.game.ikpmd.models.units.Archer;
@@ -31,6 +32,7 @@ public class FirebaseConnector implements Serializable {
     private FirebaseDatabase db;
     private String originalPassword;
     private int highestIdentifier;
+    private City attackCity;
 
     public void connect(){
         db = FirebaseDatabase.getInstance();
@@ -116,7 +118,8 @@ public class FirebaseConnector implements Serializable {
             }
         });
 
-        DatabaseReference reference = db.getReference("attacks/"+highestIdentifier + 1);
+        DatabaseReference reference = db.getReference("attacks/"+(highestIdentifier + 1));
+        attack.setUniqueAttackIdentifier(highestIdentifier + 1);
         reference.setValue(attack);
     }
 
@@ -142,5 +145,10 @@ public class FirebaseConnector implements Serializable {
 
             }
         });
+    }
+
+    public void updateAttackInFirebase(Attack attack){
+        final DatabaseReference attackReference = db.getReference("attacks/"+attack.getUniqueAttackIdentifier());
+        attackReference.setValue(attack);
     }
 }

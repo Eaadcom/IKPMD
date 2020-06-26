@@ -27,20 +27,35 @@ import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 import java.util.Random;
 
 public class CityActivity extends AppCompatActivity {
+    City targetCity;
     private FirebaseConnector firebaseConnector;
     private boolean userHasCity = false;
+    boolean getAttacks = true;
     DatabaseHelper databaseHelper;
     City currentCity;
     boolean underattack;
     boolean attacking;
-    ArrayList<Attack> incomingAttacks;
-    ArrayList<Attack> outgoingAttacks;
-    ArrayList<Attack> allAttacks;
+    boolean citiesLoaded;
+    ArrayList<Attack> incomingAttacks = new ArrayList<>();
+    ArrayList<Attack> outgoingAttacks = new ArrayList<>();
+    ArrayList<Attack> allAttacks = new ArrayList<>();
+    private ArrayList<City> allCities = new ArrayList<>();
+
+    int targetCityId;
+    int attackPowerSwordsman;
+    int attackPowerArcher;
+    int attackPowerHorseman;
+    int totalAttackPower;
+    int totalAttackPower2;
+    int defencePowerSwordsman;
+    int defencePowerArcher;
+    int defencePowerHorseman;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +68,71 @@ public class CityActivity extends AppCompatActivity {
 
         // DatabaseHelper setup
         databaseHelper = DatabaseHelper.getHelper(this);
+        databaseHelper.onUpgrade(databaseHelper.mSQLDB, 0, 0);
+        citiesLoaded = false;
 
         // Get username from intent
         String username = getIntent().getStringExtra("username");
 
         getAllCities(username);
         createListeners();
-        getAttacks();
+    }
+
+    private void calculateAttackOutcome(Attack attack){
+        targetCityId = attack.getTargetCityUniqueId();
+
+        attackPowerSwordsman = attack.getSwordsman().getOffence() * attack.getSwordsman().getAmount();
+        attackPowerArcher = attack.getArcher().getOffence() * attack.getArcher().getAmount();
+        attackPowerHorseman = attack.getHorseman().getOffence() * attack.getHorseman().getAmount();
+
+        totalAttackPower = attackPowerSwordsman + attackPowerArcher + attackPowerHorseman;
+
+        Log.d("", ""+allCities.size());
+
+        for (int i = 0; i < allCities.size(); i++){
+            if (Integer.parseInt(allCities.get(i).getUniqueIdentifier()) == targetCityId){
+                targetCity = allCities.get(i);
+            }
+        }
+
+        defencePowerSwordsman = attack.getSwordsman().getDefence() * attack.getSwordsman().getAmount();
+        defencePowerArcher = attack.getArcher().getDefence() * attack.getArcher().getAmount();
+        defencePowerHorseman = attack.getHorseman().getDefence() * attack.getHorseman().getAmount();
+
+        // HorsemanDefends
+        if (defencePowerHorseman - totalAttackPower < 0){
+            defencePowerHorseman = 0;
+        } else {
+            totalAttackPower2 = totalAttackPower = defencePowerHorseman;
+            defencePowerHorseman = defencePowerHorseman - totalAttackPower;
+            totalAttackPower = totalAttackPower2;
+        }
+
+        // SwordsmanDefends
+        if (defencePowerSwordsman - totalAttackPower < 0){
+            defencePowerSwordsman = 0;
+        } else {
+            totalAttackPower2 = totalAttackPower - defencePowerSwordsman;
+            defencePowerSwordsman = defencePowerSwordsman - totalAttackPower;
+            totalAttackPower = totalAttackPower2;
+        }
+
+        // ArcherDefends
+        if (defencePowerArcher - totalAttackPower < 0){
+            defencePowerArcher = 0;
+        } else {
+            totalAttackPower2 = totalAttackPower - defencePowerArcher;
+            defencePowerArcher = defencePowerArcher - totalAttackPower;
+            totalAttackPower = totalAttackPower2;
+        }
+
+        targetCity.getHorseman().setAmount( (int) (defencePowerHorseman / targetCity.getHorseman().getDefence()) * 10);
+        targetCity.getArcher().setAmount( (int) (defencePowerArcher / targetCity.getArcher().getDefence()) * 10);
+        targetCity.getSwordsman().setAmount( (int) (defencePowerSwordsman / targetCity.getSwordsman().getDefence()) * 10);
+
+        attack.setArrived(true);
+        firebaseConnector.updateCityInFirebase(targetCity);
+        firebaseConnector.updateAttackInFirebase(attack);
     }
 
     public void checkForAttacks(ArrayList<Attack> attacks){
@@ -68,18 +141,33 @@ public class CityActivity extends AppCompatActivity {
 
         for (int i = 0; i < attacks.size(); i++){
             if (attacks.get(i).getTargetCityUniqueId() == Integer.parseInt(currentCity.getUniqueIdentifier()) && !attacks.get(i).isArrived()){
-                underattack = true;
-                incomingAttacks.add(attacks.get(i));
-                allAttacks.add(attacks.get(i));
+                if(attacks.get(i).getArrivaltime() <= Instant.now().getEpochSecond()){
+                    calculateAttackOutcome(attacks.get(i));
+                } else {
+                    underattack = true;
+                    incomingAttacks.add(attacks.get(i));
+                    allAttacks.add(attacks.get(i));
+                }
             }
             if (attacks.get(i).getOriginCityUniqueId() == Integer.parseInt(currentCity.getUniqueIdentifier()) && !attacks.get(i).isArrived()){
-                attacking = true;
-                outgoingAttacks.add(attacks.get(i));
-                allAttacks.add(attacks.get(i));
+                if(attacks.get(i).getArrivaltime() <= Instant.now().getEpochSecond()){
+                    calculateAttackOutcome(attacks.get(i));
+                } else {
+                    attacking = true;
+                    incomingAttacks.add(attacks.get(i));
+                    allAttacks.add(attacks.get(i));
+                }
             }
         }
 
+        addAttacksToLocalDb();
+    }
 
+    public void addAttacksToLocalDb(){
+
+        for (int i = 0; i < allAttacks.size(); i++){
+            databaseHelper.insertAttackIntoSQLiteDatabase(allAttacks.get(i));
+        }
     }
 
     private void getAttacks(){
@@ -103,6 +191,12 @@ public class CityActivity extends AppCompatActivity {
         if (!userHasCity){
             currentCity = createCity(username);
         }
+
+        allCities = cities;
+        if (getAttacks){
+            getAttacks();
+        }
+        getAttacks = false;
         setPageVariables();
     }
 
@@ -143,7 +237,6 @@ public class CityActivity extends AppCompatActivity {
         for (int i = 0; i < cursor.getCount(); i++){
 
             int currentInt = Integer.parseInt(cursor.getString(0));
-            Log.d("newcitylog4", ""+currentInt);
 
             if (highestIdentifier < Integer.parseInt(cursor.getString(0))){
                 highestIdentifier = currentInt;
@@ -162,12 +255,12 @@ public class CityActivity extends AppCompatActivity {
     }
 
     public void addCitiesToLocalDb(ArrayList<City> cities){
-
-        databaseHelper.onUpgrade(databaseHelper.mSQLDB, 0, 0);
-
-        for (int i = 0; i < cities.size(); i++){
-            databaseHelper.insertCityIntoSQLiteDatabase(cities.get(i));
+        if (!citiesLoaded){
+            for (int i = 0; i < cities.size(); i++){
+                databaseHelper.insertCityIntoSQLiteDatabase(cities.get(i));
+            }
         }
+        citiesLoaded = true;
     }
 
     public void moveToCityList(){
@@ -185,6 +278,14 @@ public class CityActivity extends AppCompatActivity {
     private void createListeners(){
         ImageButton loginButton = (ImageButton) findViewById(R.id.openCityListButton);
         ImageButton barracksButton = (ImageButton) findViewById(R.id.barracksButton);
+        Button attackListButton = (Button) findViewById(R.id.attackListButton);
+
+        attackListButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                moveToAttackList();
+            }
+        });
 
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override

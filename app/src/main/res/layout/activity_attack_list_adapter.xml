@@ -6,4 +6,76 @@
     android:layout_height="match_parent"
     tools:context=".list.AttackListAdapter">
 
+    <TextView
+        android:id="@+id/originCity"
+        android:layout_width="160dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="56dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:text="from: [city name]"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/swordsmanAmount"
+        android:layout_width="185dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="56dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:text="swordsmen: [0]"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/targetCity" />
+
+    <TextView
+        android:id="@+id/archerAmount"
+        android:layout_width="185dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="56dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:text="archers: [0]"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swordsmanAmount" />
+
+    <TextView
+        android:id="@+id/horsemanAmount"
+        android:layout_width="185dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="56dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:text="horsemen: [0]"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/archerAmount" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/attackicon" />
+
+    <TextView
+        android:id="@+id/targetCity"
+        android:layout_width="159dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="56dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:text="to: [city name]"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/originCity" />
 </androidx.constraintlayout.widget.ConstraintLayout>
