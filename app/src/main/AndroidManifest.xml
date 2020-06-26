@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AttackActivity"></activity>
+        <activity android:name=".list.AttackListAdapter"></activity>
+        <activity android:name=".list.AttackListActivity" />
+        <activity android:name=".AttackActivity" />
         <activity android:name=".UnitPiechartActivity" />
         <activity android:name=".BarracksActivity" />
         <activity android:name=".list.CityListAdapter" />

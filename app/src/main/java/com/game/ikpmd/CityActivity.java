@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 import com.game.ikpmd.database.DatabaseHelper;
 import com.game.ikpmd.firebaseConnector.FirebaseConnector;
+import com.game.ikpmd.list.AttackListActivity;
 import com.game.ikpmd.list.CityListActivity;
 import com.game.ikpmd.list.CityListAdapter;
+import com.game.ikpmd.models.Attack;
 import com.game.ikpmd.models.City;
 import com.game.ikpmd.models.buildings.Goldmine;
 import com.game.ikpmd.models.units.Archer;
@@ -34,7 +36,11 @@ public class CityActivity extends AppCompatActivity {
     private boolean userHasCity = false;
     DatabaseHelper databaseHelper;
     City currentCity;
-
+    boolean underattack;
+    boolean attacking;
+    ArrayList<Attack> incomingAttacks;
+    ArrayList<Attack> outgoingAttacks;
+    ArrayList<Attack> allAttacks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,31 @@ public class CityActivity extends AppCompatActivity {
 
         getAllCities(username);
         createListeners();
+        getAttacks();
+    }
+
+    public void checkForAttacks(ArrayList<Attack> attacks){
+        underattack = false;
+        attacking = false;
+
+        for (int i = 0; i < attacks.size(); i++){
+            if (attacks.get(i).getTargetCityUniqueId() == Integer.parseInt(currentCity.getUniqueIdentifier()) && !attacks.get(i).isArrived()){
+                underattack = true;
+                incomingAttacks.add(attacks.get(i));
+                allAttacks.add(attacks.get(i));
+            }
+            if (attacks.get(i).getOriginCityUniqueId() == Integer.parseInt(currentCity.getUniqueIdentifier()) && !attacks.get(i).isArrived()){
+                attacking = true;
+                outgoingAttacks.add(attacks.get(i));
+                allAttacks.add(attacks.get(i));
+            }
+        }
+
+
+    }
+
+    private void getAttacks(){
+        firebaseConnector.getAttacks(this);
     }
 
     private void getAllCities(String username){
@@ -168,5 +199,10 @@ public class CityActivity extends AppCompatActivity {
                 moveToBarracks();
             }
         });
+    }
+
+    public void moveToAttackList(){
+        Intent intent = new Intent(CityActivity.this, AttackListActivity.class);
+        startActivity(intent);
     }
 }

@@ -27,8 +27,6 @@ public class CityListAdapter extends ArrayAdapter<City> {
     public View getView(int position, View convertView, ViewGroup parent) {
         CityListAdapter.ViewHolder vh;
 
-        createListeners();
-
         if (convertView == null ) {
             vh = new CityListAdapter.ViewHolder();
             LayoutInflater li = LayoutInflater.from(getContext());
@@ -54,16 +52,5 @@ public class CityListAdapter extends ArrayAdapter<City> {
         TextView owner;
         TextView xCoor;
         TextView yCoor;
-    }
-
-    private void createListeners(){
-//        Button attackButton = (Button) itemView.findViewById(R.id.attackButton);
-//
-//        attackButton.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("test", city.getName());
-//            }
-//        });
     }
 }

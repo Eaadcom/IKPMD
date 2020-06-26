@@ -32,4 +32,12 @@ public class Horseman implements Unit{
     public long getCost() {
         return cost;
     }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void reduceByAmount(int amount){
+        this.amount = this.amount - amount;
+    }
 }
